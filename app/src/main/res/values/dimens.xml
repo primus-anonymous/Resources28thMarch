@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="hello_world_size">32sp</dimen>
+    <dimen name="btn_radius">24dp</dimen>
+    <dimen name="btn_text_size">23sp</dimen>
+</resources>

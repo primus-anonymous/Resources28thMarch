@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Resources28thMarch</string>
+    <string name="hello_world">Hello World!</string>
+    <string name="show_toast">I\'m a Toast!!!!!</string>
+
+    <string name="key_1">1</string>
+    <string name="key_2">2</string>
+    <string name="key_3">3</string>
+    <string name="key_4">4</string>
+    <string name="key_5">5</string>
+    <string name="key_6">6</string>
+    <string name="key_7">7</string>
+    <string name="key_8">8</string>
+    <string name="key_9">9</string>
+    <string name="key_0">0</string>
+    <string name="key_dot">.</string>
+    <string name="input_hint">Hint</string>
+    <string name="input_error">Length should be greater than 5</string>
+    <string name="theme_one">One</string>
+    <string name="theme_two">Two</string>
+
+</resources>
