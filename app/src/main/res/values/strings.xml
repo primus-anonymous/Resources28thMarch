@@ -18,5 +18,7 @@
     <string name="input_error">Length should be greater than 5</string>
     <string name="theme_one">One</string>
     <string name="theme_two">Two</string>
+    <string name="preferences">Preferences</string>
+    <string name="open_link">Open Link</string>
 
 </resources>

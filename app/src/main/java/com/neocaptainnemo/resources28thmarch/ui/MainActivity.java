@@ -1,10 +1,15 @@
-package com.neocaptainnemo.resources28thmarch;
+package com.neocaptainnemo.resources28thmarch.ui;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import android.content.Context;
-import android.content.SharedPreferences;
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,30 +19,37 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.neocaptainnemo.resources28thmarch.R;
+import com.neocaptainnemo.resources28thmarch.storage.Theme;
+import com.neocaptainnemo.resources28thmarch.storage.ThemeStorage;
 
 public class MainActivity extends AppCompatActivity {
-
-    private static final String THEME_KEY = "THEME_KEY";
-
-    private static final String THEME_ONE = "THEME_ONE";
-    private static final String THEME_TWO = "THEME_TWO";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
+        ThemeStorage storage = ThemeStorage.getInstance(getApplicationContext());
 
-        String theme = sharedPreferences.getString(THEME_KEY, THEME_ONE);
+        Theme savedTheme = storage.getTheme();
 
-        switch (theme){
-            case THEME_TWO:
-                setTheme(R.style.Theme_Resources28thMarch_V2);
-                break;
-            default:
-                setTheme(R.style.Theme_Resources28thMarch);
-                break;
-        }
+        ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+
+                    Theme chosenTheme = (Theme) data.getSerializableExtra(ThemeSelectionActivity.CHOSEN_THEME);
+
+                    storage.saveTheme(chosenTheme);
+
+                    recreate();
+                }
+            }
+        });
+
+
+        setTheme(savedTheme.getTheme());
 
         setContentView(R.layout.activity_calc);
 
@@ -47,9 +59,14 @@ public class MainActivity extends AppCompatActivity {
 
         Toast.makeText(this, getString(R.string.hello_world) + dimenSize, Toast.LENGTH_SHORT).show();
 
-
         TextInputLayout inputLayout = findViewById(R.id.text_input_layout);
         TextInputEditText editText = findViewById(R.id.text_input_edit);
+
+        if (getIntent() != null && getIntent().hasExtra("welcome")) {
+            String message = getIntent().getStringExtra("welcome");
+
+            editText.setText(message);
+        }
 
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -85,28 +102,26 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        findViewById(R.id.theme_one).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.preferences).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ThemeSelectionActivity.class);
+                intent.putExtra(ThemeSelectionActivity.SELECTED_THEME, savedTheme);
 
-                sharedPreferences.edit()
-                        .putString(THEME_KEY, THEME_ONE)
-                        .apply();
-
-                recreate();
+                launcher.launch(intent);
             }
         });
 
-        findViewById(R.id.theme_two).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.link).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sharedPreferences.edit()
-                        .putString(THEME_KEY, THEME_TWO)
-                        .apply();
+                Uri uri = Uri.parse("some://yandex.ru");
 
-                recreate();
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(uri);
+
+                startActivity(Intent.createChooser(intent, null));
             }
         });
-
     }
 }

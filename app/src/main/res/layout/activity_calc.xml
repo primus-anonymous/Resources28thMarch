@@ -95,23 +95,16 @@
 
     </GridLayout>
 
-    <LinearLayout
+    <Button
+        android:id="@+id/preferences"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp">
+        android:text="@string/preferences" />
 
-        <Button
-            android:id="@+id/theme_one"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/theme_one" />
-
-        <Button
-            android:id="@+id/theme_two"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/theme_two" />
-
-    </LinearLayout>
+    <Button
+        android:id="@+id/link"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/open_link" />
 
 </LinearLayout>
